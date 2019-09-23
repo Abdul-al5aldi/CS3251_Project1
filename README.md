@@ -6,6 +6,7 @@ The goal of this project is to familiarize the student with **sockets programmin
 ## Server Arguments Format:
 ``./server port``
   - port is the port number (e.g., 2019)
+- In the compiling step, ``-std=c99 `` ***must*** be added.
   
 ###
 
