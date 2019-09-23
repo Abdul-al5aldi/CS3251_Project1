@@ -39,7 +39,7 @@ Expected outputs:
 > Withdraw done successfully, new balance for account [myCD] = [$409].
 - If amount > balance:
 > Error: insufficient funds.
-- If attempt to do more than 3 withdraws in 1 minute:
+- If attempt to do more than 3 withdraws **for an account** in 1 minute, the server depends only on the time of the first withdraw regardless of the rest.
 > Error: too many withdraws in a minute, please try again later.
 
 

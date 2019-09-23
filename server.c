@@ -26,47 +26,38 @@
 #define RCVBUFSIZE 512 /* The receive buffer size */
 #define SNDBUFSIZE 512 /* The send buffer size */
 #define BUFSIZE 40     /* Your name can be as many as 40 chars*/
-int withdrawTimes[3] = {-1, -1, -1};
 
 /* Terminate program function */
 int end() {
-  //printf("Connection terminated...\n");
+  // printf("Connection terminated...\n");
   exit(0);
   return 0;
 }
 
 /* Time handler function */
-int getWithdrawsCount() {
+int getWithdrawsCount(int *withdrawTimes) {
+
   time_t timeNow = time(NULL);
+  int first = withdrawTimes[0], count = 0;
 
-  for (int i = 0; i < 3; i++) {
-    int t = withdrawTimes[i];
-    if (timeNow - t >= 60) {
+  if (timeNow - first >= 60) {
+    for (int i = 0; i < 3; i++) 
       withdrawTimes[i] = -1;
-    }
   }
 
   for (int i = 0; i < 3; i++) {
-    for (int j = i + 1; j < 3; j++) {
-      if (withdrawTimes[i] > withdrawTimes[j]) {
-        int tmp = withdrawTimes[i];
-        withdrawTimes[i] = withdrawTimes[j];
-        withdrawTimes[j] = tmp;
-      }
-    }
+    if (withdrawTimes[i] != -1)
+      count = count + 1;
   }
 
-  for (int i = 0; i < 3; i++) {
-    if (withdrawTimes[i] != -1) {
-      return 3 - i;
-    }
-  }
+  return count;
 }
 
 struct account {
   char name[BUFSIZE];
   int balance;
   int index;
+  int withdrawTimes[3];
 };
 
 /* The main function */
@@ -87,11 +78,11 @@ int main(int argc, char *argv[]) {
   int account1Index, account2Index = -1, amount, withdrawsCount;
   char *accountName1, *accountName2;
 
-  struct account a1 = {"myChecking", 29, 0};
-  struct account a2 = {"mySavings", 911, 1};
-  struct account a3 = {"myCD", 553, 2};
-  struct account a4 = {"my401k", 104, 3};
-  struct account a5 = {"my529", 925, 4};
+  struct account a1 = {"myChecking", 29, 0, {-1, -1, -1}};
+  struct account a2 = {"mySavings", 911, 1, {-1, -1, -1}};
+  struct account a3 = {"myCD", 553, 2, {-1, -1, -1}};
+  struct account a4 = {"my401k", 104, 3, {-1, -1, -1}};
+  struct account a5 = {"my529", 925, 4, {-1, -1, -1}};
 
   struct account accounts[5] = {a1, a2, a3, a4, a5};
 
@@ -113,6 +104,7 @@ int main(int argc, char *argv[]) {
 
   /* Loop server forever*/
   while (1) {
+
     /* Accept incoming connection */
     clientSock = accept(serverSock, NULL, NULL);
     if (clientSock < 0) end();
@@ -139,7 +131,7 @@ int main(int argc, char *argv[]) {
     else if (strcmp(msgType, "WITHDRAW") == 0) {
       printf("- Request for withdraw [$%d] from account [%s]. / ", amount, accountName1);
 
-      int withdrawsCount = getWithdrawsCount();
+      int withdrawsCount = getWithdrawsCount(accounts[account1Index].withdrawTimes);
       if (withdrawsCount >= 3) {
         printf("failed, too many withdraws in a minute.\n");
         snprintf(sndBuf, sizeof(sndBuf), "Error: too many withdraws in a minute, please try again later.\n");
@@ -149,9 +141,10 @@ int main(int argc, char *argv[]) {
           snprintf(sndBuf, sizeof(sndBuf), "Error: insufficient funds.\n");
         } else {
           time_t timeNow = time(NULL);
+
           for (int i = 0; i < 3; i++) {
-            if (withdrawTimes[i] == -1) {
-              withdrawTimes[i] = timeNow;
+            if (accounts[account1Index].withdrawTimes[i] == -1) {
+              accounts[account1Index].withdrawTimes[i] = timeNow;
               break;
             }
           }
