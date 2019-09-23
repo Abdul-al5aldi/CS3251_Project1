@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     end();
   }
 
-  if (amount <= 0) {
+  if ( (strcmp(msgType, "WITHDRAW") == 0 || strcmp(msgType, "TRANSFER") == 0) && amount <= 0) {
       printf("Error: invaild amount.\n");
       end();
   }
