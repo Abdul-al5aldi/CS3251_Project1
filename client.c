@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   // For storing arguments
   char *msgType;
   char *accountName1, *accountName2;
-  int account1Index, account2Index = -1, amount;
+  int account1Index, account2Index = -1, amount = 1;
 
   char *servIP;            /* Server IP address  */
   unsigned short servPort; /* Server Port number */
@@ -64,7 +64,9 @@ int main(int argc, char *argv[]) {
   } else if (strcmp(accountName1, "my529") == 0) {
     account1Index = 4;
   } else {
-    account1Index = -1;
+    account1Index = -1;  
+    printf("Error: invalid account name.\n");
+    end();
   }
 
   /* BAL */
@@ -105,12 +107,12 @@ int main(int argc, char *argv[]) {
     // servIP = gethostbyname(argv[5]);
     servPort = atoi(argv[6]);
   } else {
-    printf("Error: invaild arguments.\n");
+    printf("Error: invalid arguments.\n");
     end();
   }
 
   if ( (strcmp(msgType, "WITHDRAW") == 0 || strcmp(msgType, "TRANSFER") == 0) && amount <= 0) {
-      printf("Error: invaild amount.\n");
+      printf("Error: invalid amount.\n");
       end();
   }
 

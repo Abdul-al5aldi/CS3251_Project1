@@ -87,11 +87,11 @@ int main(int argc, char *argv[]) {
   int account1Index, account2Index = -1, amount, withdrawsCount;
   char *accountName1, *accountName2;
 
-  struct account a1 = {"myChecking", 200, 0};
-  struct account a2 = {"mySavings", 200, 1};
-  struct account a3 = {"myCD", 200, 2};
-  struct account a4 = {"my401k", 200, 3};
-  struct account a5 = {"my529", 200, 4};
+  struct account a1 = {"myChecking", 29, 0};
+  struct account a2 = {"mySavings", 911, 1};
+  struct account a3 = {"myCD", 553, 2};
+  struct account a4 = {"my401k", 104, 3};
+  struct account a5 = {"my529", 925, 4};
 
   struct account accounts[5] = {a1, a2, a3, a4, a5};
 
