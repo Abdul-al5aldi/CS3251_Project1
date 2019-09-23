@@ -24,7 +24,7 @@
 
 /* Terminate program function */
 int end() {
-  printf("Connection terminated...\n");
+  //printf("Connection terminated...\n");
   exit(0);
   return 0;
 }
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
     account1Index = 4;
   } else {
     account1Index = -1;  
-    printf("Error: invalid account name.\n");
+    printf("Error: invalid account name.\n\n");
     end();
   }
 
@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (strcmp(accountName1, accountName2) == 0) {
-      printf("Error: you can't transfer money to the same account.\n");
+      printf("Error: you can't transfer money to the same account.\n\n");
       end();
     }
 
@@ -107,12 +107,12 @@ int main(int argc, char *argv[]) {
     // servIP = gethostbyname(argv[5]);
     servPort = atoi(argv[6]);
   } else {
-    printf("Error: invalid arguments.\n");
+    printf("Error: invalid arguments.\n\n");
     end();
   }
 
   if ( (strcmp(msgType, "WITHDRAW") == 0 || strcmp(msgType, "TRANSFER") == 0) && amount <= 0) {
-      printf("Error: invalid amount.\n");
+      printf("Error: invalid amount.\n\n");
       end();
   }
 

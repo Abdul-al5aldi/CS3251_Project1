@@ -30,7 +30,7 @@ int withdrawTimes[3] = {-1, -1, -1};
 
 /* Terminate program function */
 int end() {
-  printf("Connection terminated...\n");
+  //printf("Connection terminated...\n");
   exit(0);
   return 0;
 }
